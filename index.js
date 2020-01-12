@@ -54,13 +54,15 @@ var server= http.createServer(function(req,res){
         //convert payload to str and return it to user using json stringify
         //return response
         var payloadString= JSON.stringify(payload);
+        //send header content type with response to return json to user without telling them
 
+        res.setHeader('Content-Type', 'application/json');
         res.writeHead(statusCode);
         res.end('payloadString');
         console.log('Returning this:',statusCode, payloadString);
 
 
-        })
+        });
         
 
 
