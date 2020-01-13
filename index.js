@@ -3,6 +3,8 @@
 var http = require('http');
 var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
+var config = require('./config');
+
 var server= http.createServer(function(req,res){ 
 
     //get url and parse it
@@ -52,7 +54,7 @@ var server= http.createServer(function(req,res){
         statusCode= typeof(statusCode) =='number'? statusCode : 200;
         payload = typeof(payload) =='object'? payload : {};
         //convert payload to str and return it to user using json stringify
-        //return response
+        //return response 
         var payloadString= JSON.stringify(payload);
         //send header content type with response to return json to user without telling them
 
@@ -75,8 +77,8 @@ var server= http.createServer(function(req,res){
     
 });
 
-server.listen(3000, function(){
-    console.log('Server listening at port 3000')
+server.listen(config.port, function(){
+    console.log('Server listening at port ' +config.port+ 'in' +config.envName + 'name' );
 });   
 /*each call at endpoint calls the funct then the objects 
 req==getting url that use requests and res are filled */
@@ -85,13 +87,10 @@ req==getting url that use requests and res are filled */
 //def handler
 var handlers = {}
 //sample handler
-handlers.sample = function(data,callback){
+handlers.ping = function(data,callback){
     /*handlers callback after they are 
     done with status code and payload object */
-    callback(406, {'name' : 'sample handler'});
-
-
-
+    callback(200);
 };
 //404
 handlers.notFound = function(data,callback){
@@ -102,5 +101,5 @@ handlers.notFound = function(data,callback){
 
  // request router
  var router = { 
-     'sample' : handlers.sample
+     'ping' : handlers.ping
  };
