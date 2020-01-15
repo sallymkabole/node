@@ -4,6 +4,15 @@ var http = require('http');
 var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config');
+var fs =require('fs');
+var _data=require('./lib/data');
+var handlers= require('./lib/handlers');
+
+// creating file use lib.create from data.js and fill it's parameters
+// @TODO
+_data.create('test','newFile',{'name':'sally'},function(err){
+    console.log('This is an error', err);
+});
 
 var server= http.createServer(function(req,res){ 
 
@@ -78,28 +87,17 @@ var server= http.createServer(function(req,res){
 });
 
 server.listen(config.port, function(){
-    console.log('Server listening at port ' +config.port+ 'in' +config.envName + 'name' );
+    console.log('Server listening at port ' +config.port+ ' in ' +config.envName );
 });   
 /*each call at endpoint calls the funct then the objects 
 req==getting url that use requests and res are filled */
 /*parsed url is true so that query string module can be called so that
  we can get url object by parsing query string data */
-//def handler
-var handlers = {}
-//sample handler
-handlers.ping = function(data,callback){
-    /*handlers callback after they are 
-    done with status code and payload object */
-    callback(200);
-};
-//404
-handlers.notFound = function(data,callback){
-    callback(404);
-};
 
 
 
  // request router
  var router = { 
      'ping' : handlers.ping
+     'users':handlers.users
  };
